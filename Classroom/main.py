@@ -414,7 +414,7 @@ class StudentDataEntry:
             c.setFont("Helvetica-Bold", 24)
             c.drawString(130, height - 80, "REPORT CARD")
             c.setFont("Helvetica", 16)
-            c.drawString(130, height - 100, "Salford High School")
+            c.drawString(130, height - 100, "Hill Top School")
             
             c.setFont("Helvetica-Bold", 12)
             c.drawString(50, height - 150, "Student Details:")
@@ -526,7 +526,7 @@ class StudentDataEntry:
             c.setFont("Helvetica-Bold", 24)
             c.drawString(130, height - 80, "REPORT CARD")
             c.setFont("Helvetica", 16)
-            c.drawString(130, height - 100, "Salford High School")
+            c.drawString(130, height - 100, "Hill Top School")
             
             name = student_data[1]
             class_val = student_data[2]

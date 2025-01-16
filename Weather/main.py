@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import datetime
 
 class EnvironmentSystem:
     def __init__(self):
@@ -135,19 +134,12 @@ class EnvironmentSystemGUI:
         self.create_gui()
         
     def create_gui(self):
-        # Create main frame
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.grid(row=0, column=0, sticky="nsew")
-        
-        # Create and style notebook
-        style = ttk.Style()
-        style.configure("TNotebook", padding=5)
-        style.configure("TNotebook.Tab", padding=[12, 4], font=('Helvetica', 10))
         
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.pack(expand=True, fill='both')
         
-        # Create tabs with styled frames
         self.input_frame = ttk.Frame(self.notebook, padding="20")
         self.display_frame = ttk.Frame(self.notebook, padding="20")
         self.analysis_frame = ttk.Frame(self.notebook, padding="20")
@@ -161,11 +153,9 @@ class EnvironmentSystemGUI:
         self.setup_analysis_tab()
         
     def setup_input_tab(self):
-        # Create a frame for the form
         form_frame = ttk.LabelFrame(self.input_frame, text="Enter City Data", padding="20")
         form_frame.pack(fill='x', padx=10, pady=5)
         
-        # City Selection Frame
         city_frame = ttk.Frame(form_frame)
         city_frame.pack(fill='x', pady=5)
         
@@ -174,16 +164,13 @@ class EnvironmentSystemGUI:
         city_combo = ttk.Combobox(city_frame, textvariable=self.city_var, values=self.indian_cities)
         city_combo.pack(side='left', padx=5)
         
-        # Custom City Entry
         ttk.Label(city_frame, text="or Add Custom City:").pack(side='left', padx=5)
         self.custom_city_var = tk.StringVar()
         custom_city_entry = ttk.Entry(city_frame, textvariable=self.custom_city_var)
         custom_city_entry.pack(side='left', padx=5)
         
-        # Add Custom City Button
         ttk.Button(city_frame, text="Add to List", command=self.add_custom_city).pack(side='left', padx=5)
         
-        # Month Selection
         month_frame = ttk.Frame(form_frame)
         month_frame.pack(fill='x', pady=5)
         
@@ -194,7 +181,6 @@ class EnvironmentSystemGUI:
         month_combo = ttk.Combobox(month_frame, textvariable=self.month_var, values=months)
         month_combo.pack(side='left', padx=5)
         
-        # Temperature Input
         temp_frame = ttk.Frame(form_frame)
         temp_frame.pack(fill='x', pady=5)
         
@@ -203,7 +189,6 @@ class EnvironmentSystemGUI:
         temp_entry = ttk.Entry(temp_frame, textvariable=self.temp_var)
         temp_entry.pack(side='left', padx=5)
         
-        # Pollution Input
         pollution_frame = ttk.Frame(form_frame)
         pollution_frame.pack(fill='x', pady=5)
         
@@ -212,23 +197,18 @@ class EnvironmentSystemGUI:
         pollution_entry = ttk.Entry(pollution_frame, textvariable=self.pollution_var)
         pollution_entry.pack(side='left', padx=5)
         
-        # Submit Button
         submit_frame = ttk.Frame(form_frame)
         submit_frame.pack(fill='x', pady=10)
         submit_btn = ttk.Button(submit_frame, text="Submit Data", command=self.submit_data)
         submit_btn.pack(pady=10)
         
     def setup_display_tab(self):
-        # Create Treeview
         self.tree = ttk.Treeview(self.display_frame, columns=('City', 'Month', 'Temperature', 'Pollution'), show='headings')
-        
-        # Set column headings
         self.tree.heading('City', text='City')
         self.tree.heading('Month', text='Month')
         self.tree.heading('Temperature', text='Temperature (°C)')
         self.tree.heading('Pollution', text='Pollution (AQI)')
         
-        # Set column widths
         self.tree.column('City', width=100)
         self.tree.column('Month', width=100)
         self.tree.column('Temperature', width=100)
@@ -236,20 +216,16 @@ class EnvironmentSystemGUI:
         
         self.tree.pack(expand=True, fill='both', padx=10, pady=10)
         
-        # Add scrollbar
         scrollbar = ttk.Scrollbar(self.display_frame, orient=tk.VERTICAL, command=self.tree.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.tree.configure(yscrollcommand=scrollbar.set)
         
-        # Refresh button
         ttk.Button(self.display_frame, text="Refresh Data", command=self.refresh_display).pack(pady=10)
         
     def setup_analysis_tab(self):
-        # Frame for buttons
         button_frame = ttk.Frame(self.analysis_frame)
         button_frame.pack(pady=10)
         
-        # Buttons for different analyses
         ttk.Button(button_frame, text="Temperature Extremes", 
                   command=self.show_temperature_extremes).pack(pady=5)
         ttk.Button(button_frame, text="Pollution Levels", 
@@ -257,11 +233,9 @@ class EnvironmentSystemGUI:
         ttk.Button(button_frame, text="City Categories", 
                   command=self.show_categories).pack(pady=5)
         
-        # Results text area
         self.analysis_text = tk.Text(self.analysis_frame, height=15, width=50)
         self.analysis_text.pack(pady=10, padx=10)
         
-        # Add scrollbar to text area
         text_scroll = ttk.Scrollbar(self.analysis_frame, orient=tk.VERTICAL, command=self.analysis_text.yview)
         text_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.analysis_text.configure(yscrollcommand=text_scroll.set)
@@ -293,24 +267,19 @@ class EnvironmentSystemGUI:
             self.env_system.store_data(city, temperature, pollution, month)
             messagebox.showinfo("Success", "Data stored successfully!")
             
-            # Clear inputs
             self.city_var.set('')
             self.month_var.set('')
             self.temp_var.set('')
             self.pollution_var.set('')
-            
-            # Refresh display
             self.refresh_display()
             
         except ValueError:
             messagebox.showerror("Error", "Please enter valid numerical values for temperature and pollution!")
             
     def refresh_display(self):
-        # Clear existing items
         for item in self.tree.get_children():
             self.tree.delete(item)
             
-        # Insert data
         for city, data in self.env_system.city_data.items():
             for month in data['temperatures'].keys():
                 self.tree.insert('', 'end', values=(
@@ -342,10 +311,11 @@ class EnvironmentSystemGUI:
         for category, cities in categories.items():
             self.analysis_text.insert(tk.END, f"{category}: {', '.join(cities) if cities else 'None'}\n")
 
-    def main():
-        root = tk.Tk()
-        app = EnvironmentSystemGUI(root)
-        root.mainloop()
+# The main function and entry point of the application
+def main():
+    root = tk.Tk()
+    app = EnvironmentSystemGUI(root)
+    root.mainloop()
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
